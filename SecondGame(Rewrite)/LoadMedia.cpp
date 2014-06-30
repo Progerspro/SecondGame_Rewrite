@@ -12,9 +12,17 @@ LoadMedia::~LoadMedia()
 	Free();
 }
 
-void LoadMedia::SurfacePath(std::string Path_To_Surface)
+void LoadMedia::PushTexture(std::string Path_To_Surface)
 {
 	Path = Path_To_Surface;
+	if (!LoadSurface())
+	{
+		std::cerr << "Failed to push texture at LoadSurface" << std::endl;
+	}
+	else if (!CreateTexture())
+	{
+		std::cerr << "Failed to push texture at CreateTexture" << std::endl;
+	}
 }
 
 void LoadMedia::ImageInit()
@@ -49,6 +57,10 @@ void LoadMedia::Free()
 void LoadMedia::GetRenderer(SDL_Renderer* MainRender)
 {
 	LocalRender = MainRender;
+	if (LocalRender == NULL)
+	{
+		std::cerr << "ERROR! Could not import MainRender to LocalRender" << std::endl;
+	}
 }
 
 bool LoadMedia::LoadSurface()

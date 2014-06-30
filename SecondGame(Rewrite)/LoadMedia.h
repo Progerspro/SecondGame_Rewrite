@@ -5,9 +5,17 @@
 class LoadMedia
 {
 private:
+	//DATA
 	std::string Path;
 	bool success = true;
 	std::vector<SDL_Texture*> Texture_Container;
+
+	//Functions
+	void Free();
+	void ImageInit();
+	void PushTextureToContainer();
+	bool LoadSurface();
+	bool CreateTexture();
 	//SDL
 	SDL_Surface* MainSurface = nullptr;
 	SDL_Texture* MainTexture = nullptr;
@@ -18,13 +26,9 @@ public:
 	LoadMedia();
 	~LoadMedia();
 
-	void SurfacePath(std::string Surface_Path);
-	void ImageInit();
-	void PushTextureToContainer();
-	void Free();
+	void PushTexture(std::string Surface_Path);
 	void GetRenderer(SDL_Renderer* MainRender);
-	bool LoadSurface();
-	bool CreateTexture();
+	
 	//SDL
 	SDL_Texture* Get_Texture(int Texture_Index);
 };
