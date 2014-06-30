@@ -20,7 +20,7 @@ bool Game::Game_Init()
 	}
 	else
 	{
-		MainWindow = SDL_CreateWindow("SecondGame(Rewrite)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GData.SCREEN_WIDTH, GData.SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		MainWindow = SDL_CreateWindow("SecondGame(Rewrite)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (MainWindow == NULL)
 		{
 			std::cerr << "Could not create MainWindow! " << SDL_GetError() << std::endl;
@@ -28,8 +28,8 @@ bool Game::Game_Init()
 		}
 		else
 		{
-			GData.MainRender = SDL_CreateRenderer(MainWindow, -1, SDL_RENDERER_ACCELERATED);
-			if (GData.MainRender == NULL)
+			MainRender = SDL_CreateRenderer(MainWindow, -1, SDL_RENDERER_ACCELERATED);
+			if (MainRender == NULL)
 			{
 				std::cerr << "Could not create MainRender! " << SDL_GetError() << std::endl;
 				success = false;
@@ -42,9 +42,9 @@ bool Game::Game_Init()
 int Game::Game_Quit()
 {
 	SDL_DestroyWindow(MainWindow);
-	SDL_DestroyRenderer(GData.MainRender);
+	SDL_DestroyRenderer(MainRender);
 	MainWindow = nullptr;
-	GData.MainRender = nullptr;
+	MainRender = nullptr;
 	SDL_Quit();
 	exit(0);
 	return 0;
