@@ -4,33 +4,45 @@
 
 LoadMedia::LoadMedia()
 {
+	
 }
 
 
 LoadMedia::~LoadMedia()
 {
 	Free();
+	Texture_Container.clear();
 }
+
+namespace Global_Data_LoadMedia
+{
+	 SDL_Renderer* Global_Render;
+}
+
 
 void LoadMedia::PushTexture(std::string Path_To_Surface)
 {
 	Path = Path_To_Surface;
+	ImageInit();
 	if (!LoadSurface())
 	{
 		std::cerr << "Failed to push texture at LoadSurface" << std::endl;
 	}
-	else if (!CreateTexture())
+	else 
 	{
-		std::cerr << "Failed to push texture at CreateTexture" << std::endl;
+		if (!CreateTexture())
+		{
+			std::cerr << "Failed to push texture at CreateTexture" << std::endl;
+		}
 	}
 }
 
 void LoadMedia::ImageInit()
 {
-	if (IMG_Init(IMG_INIT_PNG) < 0)
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init(imgFlags) & imgFlags))
 	{
-		std::cerr << "Could not Init PNG! " << IMG_GetError() << std::endl;
-
+		std::cerr << "SDL_image could not initialize! SDL_image Error: \n" << IMG_GetError() << std::endl;
 	}
 	else
 	{
@@ -48,15 +60,15 @@ void LoadMedia::Free()
 	SDL_DestroyTexture(MainTexture);
 	SDL_DestroyTexture(Temp_Texture);
 	SDL_FreeSurface(MainSurface);
-	
+
 	MainTexture = nullptr;
 	Temp_Texture = nullptr;
 	MainSurface = nullptr;
 }
 
-void LoadMedia::GetRenderer(SDL_Renderer* MainRender)
+void LoadMedia::GetRenderer()
 {
-	LocalRender = MainRender;
+	LocalRender = Global_Data_LoadMedia::Global_Render;
 	if (LocalRender == NULL)
 	{
 		std::cerr << "ERROR! Could not import MainRender to LocalRender" << std::endl;
@@ -65,17 +77,23 @@ void LoadMedia::GetRenderer(SDL_Renderer* MainRender)
 
 bool LoadMedia::LoadSurface()
 {
+	
 	MainSurface = IMG_Load(Path.c_str());
 	if (MainSurface == NULL)
 	{
 		std::cerr << "Could not load surface! " << SDL_GetError() << std::endl;
 		success = false;
 	}
+	else
+	{
+		// SDL_SetColorKey(MainSurface, SDL_TRUE, SDL_MapRGB(MainSurface->format, 0, 0, 0));
+	}
 	return success;
 }
 
 bool LoadMedia::CreateTexture()
 {
+	GetRenderer();
 	MainTexture = SDL_CreateTextureFromSurface(LocalRender, MainSurface);
 	if (MainTexture == NULL)
 	{

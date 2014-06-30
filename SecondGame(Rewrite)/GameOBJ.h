@@ -10,7 +10,6 @@ public:
 	GameOBJ();
 	~GameOBJ();
 	
-	void InitTextures();
 	void HandleEvent();
 };
 

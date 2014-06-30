@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Charcter.h"
-
+#include "GameOBJ.h"
 using namespace std;
 int main(int argc, char* argv[])
 {
@@ -18,7 +18,9 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+		Global_Data_LoadMedia::Global_Render = game.MainRender;
 		charcter.PushCharcter("SpriteSheetMain.png");
+		SDL_SetRenderDrawColor(Global_Data_LoadMedia::Global_Render, 255, 255, 255, 255);
 		while (!quit)
 		{
 			while (SDL_PollEvent(&game.event) != 0)
@@ -42,12 +44,11 @@ int main(int argc, char* argv[])
 					}
 				}
 			}
-			SDL_SetRenderDrawColor(game.MainRender, 255, 255, 255, 255);
-			SDL_RenderClear(game.MainRender);
-			charcter.DrawCharcter();
-			SDL_RenderPresent(game.MainRender);
+			SDL_RenderClear(Global_Data_LoadMedia::Global_Render);
+			charcter.DrawCharcter(x);
+			SDL_RenderPresent(Global_Data_LoadMedia::Global_Render);
 		}
 	}
-	return 0;
+	return game.Game_Quit();	
 }
 

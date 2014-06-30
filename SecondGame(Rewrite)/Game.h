@@ -1,7 +1,5 @@
 #pragma once
-
-
-
+#include "LoadMedia.h"
 class Game
 {
 private:

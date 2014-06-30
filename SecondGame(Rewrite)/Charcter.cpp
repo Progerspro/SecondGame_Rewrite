@@ -17,9 +17,17 @@ void Charcter::PushCharcter(std::string Path)
 	LoadTextures.PushTexture(Path);
 }
 
-SDL_Texture* Charcter::LoadCharcter()
+SDL_Texture* Charcter::LoadCharcter(int index)
 {
-	return LoadTextures.Get_Texture(MainCharcter);
+	SDL_Texture* Temp_Texture = GameOBJ::LoadTextures.Get_Texture(index);
+	if (Temp_Texture == NULL)
+	{
+		std::cerr << "No temp_texture at character found " << std::endl;
+	}
+	else
+	{
+		return Temp_Texture;
+	}
 }
 
 void Charcter::Sprites()
@@ -38,10 +46,13 @@ void Charcter::Sprites()
 
 void Charcter::DrawCharcter(int x, int y, int rotate)
 {
+	int check;
 	SDL_Rect Dest_Rect;
-	Dest_Rect.h = Charcter_Height;
-	Dest_Rect.w = Charcter_Width;
+	Dest_Rect.h = 128;
+	Dest_Rect.w = 128;
 	Dest_Rect.x = x;
 	Dest_Rect.y = y;
-	SDL_RenderCopy(Game::MainRender, LoadCharcter(), &Sprite[1][1], &Dest_Rect);
+	check = SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, LoadCharcter(MainCharcter), NULL, &Dest_Rect);
+	std::cout << "Check = " << check << SDL_GetError() << std::endl;
+	
 }

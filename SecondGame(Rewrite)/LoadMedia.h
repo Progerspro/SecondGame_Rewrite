@@ -2,6 +2,12 @@
 
 #include <string>
 #include <vector>
+
+namespace Global_Data_LoadMedia
+{
+	extern SDL_Renderer* Global_Render;
+}
+
 class LoadMedia
 {
 private:
@@ -27,7 +33,7 @@ public:
 	~LoadMedia();
 
 	void PushTexture(std::string Surface_Path);
-	void GetRenderer(SDL_Renderer* MainRender);
+	void GetRenderer();
 	
 	//SDL
 	SDL_Texture* Get_Texture(int Texture_Index);

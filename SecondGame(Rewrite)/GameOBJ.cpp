@@ -11,7 +11,3 @@ GameOBJ::~GameOBJ()
 {
 }
 
-void GameOBJ::InitTextures()
-{
-	LoadTextures.GetRenderer(Game::MainRender);
-}
