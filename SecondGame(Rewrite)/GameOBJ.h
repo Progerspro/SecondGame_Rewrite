@@ -1,14 +1,15 @@
 #pragma once
 #include "Game.h"
 #include "LoadMedia.h"
-class GameOBJ :
-	private Game
+class GameOBJ : protected Game
 {
 protected:
 	LoadMedia LoadTextures;
+	enum {MainCharcter,MainMap};
 public:
 	GameOBJ();
 	~GameOBJ();
+	
 	void InitTextures();
 	void HandleEvent();
 };

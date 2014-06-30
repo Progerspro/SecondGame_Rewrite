@@ -34,6 +34,7 @@ bool Game::Game_Init()
 				std::cerr << "Could not create MainRender! " << SDL_GetError() << std::endl;
 				success = false;
 			}
+			
 		}
 	}
 	return success;
