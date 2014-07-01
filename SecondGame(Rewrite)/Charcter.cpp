@@ -30,7 +30,7 @@ void Charcter::Init_Sprites()
 		for (int b = 0; b < COLUMN; b++)
 		{
 			Sprite[a][b].y = a * 32 + 2;
-			Sprite[a][b].x = b * 15;
+			Sprite[a][b].x = b * 16;
 			Sprite[a][b].h = Charcter_Height;
 			Sprite[a][b].w = Charcter_Width;
 
@@ -41,8 +41,8 @@ void Charcter::Init_Sprites()
 void Charcter::DrawCharcter(int x, int y,int modeX,int modeY, int rotate)
 {
 	SDL_Rect Dest_Rect;
-	Dest_Rect.h = 128;
-	Dest_Rect.w = 128;
+	Dest_Rect.h = 29;
+	Dest_Rect.w = 16;
 	Dest_Rect.x = x;
 	Dest_Rect.y = y;
 	SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, Get_Charcter(MainCharcter), &Sprite[modeX][modeY], &Dest_Rect);
