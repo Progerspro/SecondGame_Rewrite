@@ -4,12 +4,13 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Charcter.h"
-#include "GameOBJ.h"
+#include "Map.h"
 using namespace std;
 int main(int argc, char* argv[])
 {
 	Game game;
 	Charcter charcter;
+	Map map;
 	bool quit = false;
 	int x = 0;
 	if (!game.Game_Init())
@@ -20,6 +21,8 @@ int main(int argc, char* argv[])
 	{
 		Global_Data_LoadMedia::Global_Render = game.MainRender;
 		charcter.PushCharcter("SpriteSheetMain.png");
+		charcter.PushCharcter("Charcter.png");
+		map.PushMap("Tileset.png");
 		SDL_SetRenderDrawColor(Global_Data_LoadMedia::Global_Render, 255, 255, 255, 255);
 		while (!quit)
 		{
@@ -45,6 +48,7 @@ int main(int argc, char* argv[])
 				}
 			}
 			SDL_RenderClear(Global_Data_LoadMedia::Global_Render);
+			map.DrawMap();
 			charcter.DrawCharcter(x);
 			SDL_RenderPresent(Global_Data_LoadMedia::Global_Render);
 		}

@@ -5,11 +5,11 @@ class GameOBJ : protected Game
 {
 protected:
 	LoadMedia LoadTextures;
-	enum {MainCharcter,MainMap};
 public:
 	GameOBJ();
 	~GameOBJ();
-	
+	void Global_PushTexture(std::string);
+	SDL_Texture* Get_Texture(int);
 	void HandleEvent();
 };
 

@@ -11,7 +11,6 @@ LoadMedia::LoadMedia()
 LoadMedia::~LoadMedia()
 {
 	Free();
-	Texture_Container.clear();
 }
 
 namespace Global_Data_LoadMedia
@@ -23,7 +22,11 @@ namespace Global_Data_LoadMedia
 void LoadMedia::PushTexture(std::string Path_To_Surface)
 {
 	Path = Path_To_Surface;
-	ImageInit();
+	if (CheckIfInit == false)
+	{
+		ImageInit();
+		CheckIfInit = true;
+	}
 	if (!LoadSurface())
 	{
 		std::cerr << "Failed to push texture at LoadSurface" << std::endl;
@@ -50,19 +53,14 @@ void LoadMedia::ImageInit()
 	}
 }
 
-void LoadMedia::PushTextureToContainer()
-{
-	Texture_Container.push_back(MainTexture);
-}
+
 
 void LoadMedia::Free()
 {
-	SDL_DestroyTexture(MainTexture);
-	SDL_DestroyTexture(Temp_Texture);
+	SDL_DestroyTexture(Temp_Texture_Get);
 	SDL_FreeSurface(MainSurface);
-
-	MainTexture = nullptr;
-	Temp_Texture = nullptr;
+	Texture_Container.clear();
+	Temp_Texture_Get = nullptr;
 	MainSurface = nullptr;
 }
 
@@ -86,7 +84,7 @@ bool LoadMedia::LoadSurface()
 	}
 	else
 	{
-		// SDL_SetColorKey(MainSurface, SDL_TRUE, SDL_MapRGB(MainSurface->format, 0, 0, 0));
+		 SDL_SetColorKey(MainSurface, SDL_TRUE, SDL_MapRGB(MainSurface->format, 255, 0, 255));
 	}
 	return success;
 }
@@ -94,31 +92,26 @@ bool LoadMedia::LoadSurface()
 bool LoadMedia::CreateTexture()
 {
 	GetRenderer();
-	MainTexture = SDL_CreateTextureFromSurface(LocalRender, MainSurface);
-	if (MainTexture == NULL)
+	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, MainSurface));
+
+	if (Texture_Container.back() == NULL)
 	{
 		std::cerr << "Could not create texture from surface! " << SDL_GetError << std::endl;
 		success = false;
-	}
-	else
-	{
-		PushTextureToContainer();
-		Free();
 	}
 	return success;
 }
 
 SDL_Texture* LoadMedia::Get_Texture(int Texture_Index)
 {
-	Free();
-	Temp_Texture = Texture_Container[Texture_Index];
-	if (Temp_Texture == NULL)
+	Temp_Texture_Get = Texture_Container[Texture_Index];
+	if (Temp_Texture_Get == NULL)
 	{
 		std::cerr << "Could not Get_Texture with Index " << Texture_Index << std::endl;
 		return NULL;
 	}
 	else
 	{
-		return Temp_Texture;
+		return Temp_Texture_Get;
 	}
 }

@@ -12,7 +12,7 @@ public:
 	~Game();
 
 	//Data
-	const int SCREEN_WIDTH = 600, SCREEN_HEIGHT = 800;
+	const int SCREEN_WIDTH = 900, SCREEN_HEIGHT = 600;
 	SDL_Renderer* MainRender = nullptr;
 	SDL_Event event;
 	//Functions

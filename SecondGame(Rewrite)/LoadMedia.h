@@ -19,13 +19,12 @@ private:
 	//Functions
 	void Free();
 	void ImageInit();
-	void PushTextureToContainer();
 	bool LoadSurface();
 	bool CreateTexture();
+	bool CheckIfInit = false;
 	//SDL
 	SDL_Surface* MainSurface = nullptr;
-	SDL_Texture* MainTexture = nullptr;
-	SDL_Texture* Temp_Texture = nullptr;
+	SDL_Texture* Temp_Texture_Get = nullptr;
 	SDL_Renderer* LocalRender = nullptr;
 public:
 	

@@ -4,7 +4,7 @@
 
 Charcter::Charcter()
 {
-	Sprites();
+	Init_Sprites();
 }
 
 
@@ -12,47 +12,38 @@ Charcter::~Charcter()
 {
 }
 
-void Charcter::PushCharcter(std::string Path)
+void Charcter::PushCharcter(std::string Path_To_Charcter)
 {
-	LoadTextures.PushTexture(Path);
+	GameOBJ::Global_PushTexture(Path_To_Charcter);
 }
 
-SDL_Texture* Charcter::LoadCharcter(int index)
+SDL_Texture* Charcter::Get_Charcter(int index)
 {
-	SDL_Texture* Temp_Texture = GameOBJ::LoadTextures.Get_Texture(index);
-	if (Temp_Texture == NULL)
-	{
-		std::cerr << "No temp_texture at character found " << std::endl;
-	}
-	else
-	{
-		return Temp_Texture;
-	}
+	return GameOBJ::Get_Texture(index);
 }
 
-void Charcter::Sprites()
+
+void Charcter::Init_Sprites()
 {
 	for (int a = 0; a < LINE; a++)
 	{
 		for (int b = 0; b < COLUMN; b++)
 		{
-				Sprite[a][b].h = Charcter_Height;
-				Sprite[a][b].w = Charcter_Width;
-				Sprite[a][b].y = a * 32 + 1;
-				Sprite[a][b].x = b * 15;
+			Sprite[a][b].y = a * 32 + 2;
+			Sprite[a][b].x = b * 15;
+			Sprite[a][b].h = Charcter_Height;
+			Sprite[a][b].w = Charcter_Width;
+
 		}
 	}
 }
 
-void Charcter::DrawCharcter(int x, int y, int rotate)
+void Charcter::DrawCharcter(int x, int y,int modeX,int modeY, int rotate)
 {
-	int check;
 	SDL_Rect Dest_Rect;
 	Dest_Rect.h = 128;
 	Dest_Rect.w = 128;
 	Dest_Rect.x = x;
 	Dest_Rect.y = y;
-	check = SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, LoadCharcter(MainCharcter), NULL, &Dest_Rect);
-	std::cout << "Check = " << check << SDL_GetError() << std::endl;
-	
+	SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, Get_Charcter(MainCharcter), &Sprite[modeX][modeY], &Dest_Rect);
 }
