@@ -44,7 +44,10 @@ int main(int argc, char* argv[])
 		
 			SDL_RenderClear(Global_Data_LoadMedia::Global_Render);
 			
-				map.DrawMap();
+				map.MakeGrass();
+				map.Draw(14, 56, Map::Chair);
+				map.Draw(90, 56, Map::Chair);
+				map.Draw(333, 555, Map::Chair);
 
 				text.ShowText(game.SCREEN_WIDTH / 3, game.SCREEN_HEIGHT / 2,0);
 				text.ShowText(0, 0, 1);
