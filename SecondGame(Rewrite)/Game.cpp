@@ -28,7 +28,7 @@ bool Game::Game_Init()
 		}
 		else
 		{
-			MainRender = SDL_CreateRenderer(MainWindow, -1, SDL_RENDERER_ACCELERATED);
+			MainRender = SDL_CreateRenderer(MainWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (MainRender == NULL)
 			{
 				std::cerr << "Could not create MainRender! " << SDL_GetError() << std::endl;

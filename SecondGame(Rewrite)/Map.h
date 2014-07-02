@@ -9,7 +9,7 @@ public:
 	Map();
 	~Map();
 	void PushMap(std::string);
-	void DrawMap(int=0,int=0);
+	void DrawMap(int=0,int=0,int=0);
 	void Init_Sprites();
 	SDL_Texture* Get_Map(int = 0);
 };

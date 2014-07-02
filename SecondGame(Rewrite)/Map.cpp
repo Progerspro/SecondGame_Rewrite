@@ -17,8 +17,9 @@ void Map::PushMap(std::string Path_To_Map)
 	GameOBJ::LoadTextures.PushTexture(Path_To_Map);
 }
 
-void Map::DrawMap(int x, int y)
+void Map::DrawMap(int x, int y,int index)
 {
+	SDL_Texture* TempTexture = Get_Texture(index);
 	SDL_Rect dest;
 	dest.h = 46;
 	dest.w = 80;
@@ -42,7 +43,8 @@ void Map::DrawMap(int x, int y)
 			{
 				dest.y = height * 46 - 8;
 			}
-			SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, Get_Texture(Grass), &Sprite[Grass], &dest);
+			SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, TempTexture , &Sprite[Grass], &dest);
+			
 		}
 	}
 }
