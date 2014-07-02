@@ -22,10 +22,10 @@ namespace Global_Data_LoadMedia
 void LoadMedia::PushTexture(std::string Path_To_Surface)
 {
 	Path = Path_To_Surface;
-	if (CheckIfInit == false)
+	if (Check_IfInitImage == false)
 	{
 		ImageInit();
-		CheckIfInit = true;
+		Check_IfInitImage = true;
 	}
 	if (!LoadSurface())
 	{
@@ -59,11 +59,17 @@ void LoadMedia::Free()
 {
 	SDL_DestroyTexture(Temp_Texture_Get);
 	SDL_FreeSurface(MainSurface);
+	SDL_FreeSurface(FontSurface);
 	Texture_Container.clear();
+	FontSurface = nullptr;
 	Temp_Texture_Get = nullptr;
 	MainSurface = nullptr;
+	Font = nullptr;
+	IMG_Quit();
+	TTF_Quit();
 }
 
+//Dont delete Checks if everything is good
 void LoadMedia::GetRenderer()
 {
 	LocalRender = Global_Data_LoadMedia::Global_Render;
@@ -115,3 +121,80 @@ SDL_Texture* LoadMedia::Get_Texture(int Texture_Index)
 		return Temp_Texture_Get;
 	}
 }
+
+
+bool LoadMedia::LoadFont(std::string Path_To_Font,int Font_Size)
+{
+	Font = TTF_OpenFont(Path_To_Font.c_str(), Font_Size);
+	if (Font == NULL)
+	{
+		std::cerr << "Could not open font " << TTF_GetError() << std::endl;
+		success = false;
+	}
+	return success;
+}
+
+bool LoadMedia::Make_Surface_Text(std::string Text,SDL_Color Text_Colour)
+{
+	FontSurface = TTF_RenderText_Solid(Font, Text.c_str(), Text_Colour);
+	if (FontSurface == NULL)
+	{
+		std::cerr << "Could not load font surface " << TTF_GetError() << std::endl;
+		success = false;
+	}
+	else
+	{
+		FontHeight = FontSurface->h; 
+		FontWidth = FontSurface->w;
+	}
+	return success;
+}
+
+bool LoadMedia::CreateFontTexture()
+{
+	GetRenderer();
+	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, FontSurface));
+	if (Texture_Container.back() == NULL)
+	{
+		std::cerr << "Could not create texture from surface! " << SDL_GetError << std::endl;
+		success = false;
+	}
+	return success;
+}
+
+bool LoadMedia::PushFont( std::string Text,SDL_Color FontColour)
+{
+	
+		if (!Make_Surface_Text(Text, FontColour))
+		{
+			std::cerr << "Could not make surface from the font!" << std::endl;
+			success = false;
+		}
+		else
+		{
+			if (!CreateFontTexture())
+			{
+				std::cerr << "Could not create texture from font surface!" << std::endl;
+			}
+		}
+		return success;
+}
+
+void LoadMedia::FontInit()
+{
+	if (TTF_Init() == -1)
+		std::cerr << "Could not init ttf font! " << TTF_GetError() << std::endl;
+}
+
+int LoadMedia::GetFontWidth()
+{
+	return FontWidth;
+}
+
+int LoadMedia::GetFontHeight()
+{
+	return FontHeight;
+}
+
+
+

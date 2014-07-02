@@ -13,7 +13,7 @@ private:
 	int XVelocity = 0, YVelocity = 0;
 	int XPos = 0, YPos = 0;
 	int Frame = 0,Status = 0;
-	bool Frame_Status = false;
+	const Uint8 *KeyBoardState;
 
 public:
 	Charcter();

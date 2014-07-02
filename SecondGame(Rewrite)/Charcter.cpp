@@ -60,25 +60,25 @@ void Charcter::HandleEvent(SDL_Event event)
 		case SDLK_LEFT:
 			XVelocity -= Charcter_Speed;
 			Status = 2;
-			Frame_Status = true;
+			
 			std::cout << "XVelocity = " << XVelocity << std::endl;
 			break;
 		case SDLK_RIGHT:
 			XVelocity += Charcter_Speed;
 			Status = 0;
-			Frame_Status = true;
+			
 			std::cout << "XVelocity = " << XVelocity << std::endl;
 			break;
 		case SDLK_DOWN:
 			YVelocity += Charcter_Speed;
 			Status = 3;
-			Frame_Status = true;
+		
 			std::cout << "YVelocity = " << YVelocity << std::endl;
 			break;
 		case SDLK_UP:
 			YVelocity -= Charcter_Speed;
 			Status = 1;
-			Frame_Status = true;
+			
 			std::cout << "YVelocity = " << YVelocity << std::endl;
 			break;
 		}
@@ -88,28 +88,63 @@ void Charcter::HandleEvent(SDL_Event event)
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_LEFT:
+		
 			XVelocity += Charcter_Speed;
-			Status = 2;
-			Frame_Status = false;
 			std::cout << "XVelocity = " << XVelocity << std::endl;
+			//Fix MOVE BUG
+			KeyBoardState = SDL_GetKeyboardState(NULL);
+			if (KeyBoardState[SDL_SCANCODE_UP] == 1)
+				Status = 1;
+			if (KeyBoardState[SDL_SCANCODE_RIGHT] == 1)
+				Status = 0;
+			if (KeyBoardState[SDL_SCANCODE_DOWN] == 1)
+				Status = 3;
+			//END
 			break;
 		case SDLK_RIGHT:
 			XVelocity -= Charcter_Speed;
-			Status = 0;
-			Frame_Status = false;
+		
 			std::cout << "XVelocity = " << XVelocity << std::endl;
+
+			//Fix MOVE BUG
+			KeyBoardState = SDL_GetKeyboardState(NULL);
+			if (KeyBoardState[SDL_SCANCODE_UP] == 1)
+				Status = 1;
+			if (KeyBoardState[SDL_SCANCODE_LEFT] == 1)
+				Status = 2;
+			if (KeyBoardState[SDL_SCANCODE_DOWN] == 1)
+				Status = 3;
+			//END
 			break;
 		case SDLK_DOWN:
+		
 			YVelocity -= Charcter_Speed;
-			Status = 3;
-			Frame_Status = false;
+			
 			std::cout << "YVelocity = " << YVelocity << std::endl;
+			//Fix MOVE BUG
+			KeyBoardState = SDL_GetKeyboardState(NULL);
+			if (KeyBoardState[SDL_SCANCODE_UP] == 1)
+				Status = 1;
+			if (KeyBoardState[SDL_SCANCODE_RIGHT] == 1)
+				Status = 0;
+			if (KeyBoardState[SDL_SCANCODE_LEFT] == 1)
+				Status = 2;
+			//END
 			break;
 		case SDLK_UP:
+		
 			YVelocity += Charcter_Speed;
-			Status = 1;
-			Frame_Status = false;
+			
 			std::cout << "YVelocity = " << YVelocity << std::endl;
+			//Fix MOVE BUG
+			KeyBoardState = SDL_GetKeyboardState(NULL);
+			if (KeyBoardState[SDL_SCANCODE_LEFT] == 1)
+				Status = 2;
+			if (KeyBoardState[SDL_SCANCODE_RIGHT] == 1)
+				Status = 0;
+			if (KeyBoardState[SDL_SCANCODE_DOWN] == 1)
+				Status = 3;
+			//END
 			break;
 		}
 	}
