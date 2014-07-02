@@ -24,6 +24,8 @@ int main(int argc, char* argv[])
 		Global_Data_LoadMedia::Global_Render = game.MainRender;
 		charcter.PushCharcter("SpriteSheetMain.png");
 		text.LoadFont("lazy.ttf", 50);
+		text.LoadText("Second Game!", TextColour);
+		text.LoadText("Test_Text", TextColour);
 		map.PushMap("Tileset.png");
 		SDL_SetRenderDrawColor(Global_Data_LoadMedia::Global_Render, 255, 255, 255, 255);
 		while (!quit)
@@ -43,13 +45,17 @@ int main(int argc, char* argv[])
 			SDL_RenderClear(Global_Data_LoadMedia::Global_Render);
 			
 				map.DrawMap();
-				text.ShowText("Second Game!", TextColour, game.SCREEN_WIDTH / 3, game.SCREEN_HEIGHT / 2);
+
+				text.ShowText(game.SCREEN_WIDTH / 3, game.SCREEN_HEIGHT / 2,0);
+				text.ShowText(0, 0, 1);
 			
 				charcter.Move();
 			charcter.RenderCharcter();
 			SDL_RenderPresent(Global_Data_LoadMedia::Global_Render);
 		}
 	}
-	return game.Game_Quit();	
+	
+
+	return game.Game_Quit();
 }
 

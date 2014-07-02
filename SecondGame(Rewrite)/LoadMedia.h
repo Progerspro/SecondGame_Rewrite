@@ -15,6 +15,7 @@ private:
 	std::string Path;
 	bool success = true;
 	std::vector<SDL_Texture*> Texture_Container;
+	std::vector<SDL_Surface*> Surface_Container;
 
 	void Free();
 	void GetRenderer();
@@ -32,7 +33,6 @@ private:
 	SDL_Surface* MainSurface = nullptr;
 	SDL_Texture* Temp_Texture_Get = nullptr;
 	SDL_Renderer* LocalRender = nullptr;
-	SDL_Surface* FontSurface = nullptr;
 	TTF_Font* Font = nullptr;
 public:
 	
@@ -43,8 +43,8 @@ public:
 	bool LoadFont(std::string, int);
 	//Font
 	void FontInit();
-	int GetFontWidth();
-	int GetFontHeight();
+	int GetFontWidth(int);
+	int GetFontHeight(int);
 	bool PushFont(std::string,SDL_Color);
 	//SDL
 	SDL_Texture* Get_Texture(int Texture_Index);

@@ -59,9 +59,8 @@ void LoadMedia::Free()
 {
 	SDL_DestroyTexture(Temp_Texture_Get);
 	SDL_FreeSurface(MainSurface);
-	SDL_FreeSurface(FontSurface);
 	Texture_Container.clear();
-	FontSurface = nullptr;
+	Surface_Container.clear();
 	Temp_Texture_Get = nullptr;
 	MainSurface = nullptr;
 	Font = nullptr;
@@ -136,24 +135,19 @@ bool LoadMedia::LoadFont(std::string Path_To_Font,int Font_Size)
 
 bool LoadMedia::Make_Surface_Text(std::string Text,SDL_Color Text_Colour)
 {
-	FontSurface = TTF_RenderText_Solid(Font, Text.c_str(), Text_Colour);
-	if (FontSurface == NULL)
+	Surface_Container.push_back(TTF_RenderText_Solid(Font, Text.c_str(), Text_Colour));
+	if (Surface_Container.back() == NULL)
 	{
 		std::cerr << "Could not load font surface " << TTF_GetError() << std::endl;
 		success = false;
-	}
-	else
-	{
-		FontHeight = FontSurface->h; 
-		FontWidth = FontSurface->w;
 	}
 	return success;
 }
 
 bool LoadMedia::CreateFontTexture()
 {
-	GetRenderer();
-	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, FontSurface));
+	
+	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, Surface_Container.back()));
 	if (Texture_Container.back() == NULL)
 	{
 		std::cerr << "Could not create texture from surface! " << SDL_GetError << std::endl;
@@ -182,18 +176,25 @@ bool LoadMedia::PushFont( std::string Text,SDL_Color FontColour)
 
 void LoadMedia::FontInit()
 {
+	GetRenderer();
 	if (TTF_Init() == -1)
 		std::cerr << "Could not init ttf font! " << TTF_GetError() << std::endl;
 }
 
-int LoadMedia::GetFontWidth()
+int LoadMedia::GetFontWidth(int index)
 {
-	return FontWidth;
+	SDL_Surface* Temp_Surface = Surface_Container[index];
+	if (Temp_Surface == NULL)
+		std::cerr << "Could not take the width from the surface" << std::endl;
+	return Temp_Surface->w;
 }
 
-int LoadMedia::GetFontHeight()
+int LoadMedia::GetFontHeight(int index)
 {
-	return FontHeight;
+	SDL_Surface* Temp_Surface = Surface_Container[index];
+	if (Temp_Surface == NULL)
+	std::cerr << "Could not take the width from the surface" << std::endl;
+	return Temp_Surface->h;
 }
 
 
