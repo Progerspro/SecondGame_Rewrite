@@ -135,6 +135,7 @@ bool LoadMedia::LoadFont(std::string Path_To_Font,int Font_Size)
 
 bool LoadMedia::Make_Surface_Text(std::string Text,SDL_Color Text_Colour)
 {
+	
 	Surface_Container.push_back(TTF_RenderText_Solid(Font, Text.c_str(), Text_Colour));
 	if (Surface_Container.back() == NULL)
 	{
