@@ -150,7 +150,7 @@ void Charcter::HandleEvent(SDL_Event event)
 	}
 }
 
-void Charcter::Move()
+void Charcter::Move(SDL_Rect* Wall,int ArraySize)
 {
 
 	if (Frame / 2 == 3)
@@ -161,8 +161,13 @@ void Charcter::Move()
 	//MOVE Left or Right
 	XPos += XVelocity;
 	//Check if in end of form
-	if (XPos < 0 || (XPos + 18) > SCREEN_WIDTH)
+	if (XPos < 0 || (XPos + 18) > SCREEN_WIDTH )
 		XPos -= XVelocity;
+	for (int a = 0; a < ArraySize; a++)
+	{
+		if (CollisionDetection(Wall[a]))
+			XPos -= XVelocity;
+	}
 	std::cout << "XPOS = " << XPos << std::endl;
 
 	//MOVE Up or Down
@@ -170,9 +175,27 @@ void Charcter::Move()
 	//Check
 	if (YPos < 0 || (YPos + 28) > SCREEN_HEIGHT)
 		YPos -= YVelocity;
+	for (int a = 0; a < ArraySize; a++)
+	{
+		if (CollisionDetection(Wall[a]))
+			YPos -= YVelocity;
+	}
 	std::cout << "YPOS = " << YPos << std::endl;
 	//Render the charcter
 	if (XVelocity == 2 || XVelocity == -2 || YVelocity == 2 || YVelocity == -2)
 	Frame++;
-	
+}
+
+bool Charcter::CollisionDetection(SDL_Rect Wall)
+{
+	if (XPos + 16 <= Wall.x)
+		return false;
+	if (XPos >= (Wall.x + Wall.w))
+		return false;
+	if (YPos + 29 <= Wall.y)
+		return false;
+	if (YPos + 29 >= (Wall.y + Wall.h))
+		return false;
+
+	return true;
 }

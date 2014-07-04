@@ -13,7 +13,7 @@ Map::~Map()
 {
 }
 
-void Map::PushMap(std::string Path_To_Map)
+void Map::PushObject(std::string Path_To_Map)
 {
 	GameOBJ::LoadTextures.PushTexture(Path_To_Map);
 }
@@ -46,12 +46,16 @@ void Map::MakeGrass()
 	}
 }
 
-void Map::Draw(int x, int y,int index)
+SDL_Rect Map::DrawObject(int x, int y,int index)
 {
+	//static int global_index = 0;
+	//gindex = global_index;
 	SDL_Texture* TempTexture = Get_Texture(0);
 	Destination[index].x = x;
 	Destination[index].y = y;
 	SDL_RenderCopy(Global_Data_LoadMedia::Global_Render, TempTexture , &Sprite[index], &Destination[index]);
+	//global_index++;
+	return Destination[index];
 }
 
 SDL_Texture* Map::Get_Map(int index)

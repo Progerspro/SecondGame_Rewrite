@@ -16,6 +16,8 @@ private:
 	bool success = true;
 	std::vector<SDL_Texture*> Texture_Container;
 	std::vector<SDL_Surface*> Surface_Container;
+	std::vector<SDL_Surface*> Text_Surface_Container;
+	
 
 	void Free();
 	void GetRenderer();
@@ -40,6 +42,8 @@ public:
 	~LoadMedia();
 	//Image
 	void PushTexture(std::string Surface_Path);
+	int GetImageWidth(int);
+	int GetImageHeight(int);
 	bool LoadFont(std::string, int);
 	//Font
 	void FontInit();

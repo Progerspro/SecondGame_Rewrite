@@ -10,8 +10,8 @@ public:
 	Map();
 	~Map();
 	static enum{ Grass, Chair };
-	void PushMap(std::string);
-	void Draw(int=0,int=0,int=1);
+	void PushObject(std::string);
+	SDL_Rect DrawObject(int,int,int);
 	void Init_Sprites();
 	void MakeGrass();
 	void Init_Destination();

@@ -20,11 +20,10 @@ public:
 	~Charcter();
 
 	void PushCharcter(std::string Path);
-	
 	void RenderCharcter(int=0,int=0,int=0,int=0,int=0);
-
 	void HandleEvent(SDL_Event);
-	void Move();
+	void Move(SDL_Rect*,int);
+	bool CollisionDetection(SDL_Rect);
 
 };
 

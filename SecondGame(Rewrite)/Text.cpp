@@ -37,3 +37,13 @@ SDL_Texture* Text::GetText(int TextIndex)
 		std::cerr << "Could not get text" << std::endl;
 	return Temp_Texture;
 }
+
+int Text::font_Width(int index)
+{
+	return font.GetFontWidth(index);
+}
+
+int Text::font_Height(int index)
+{
+	return font.GetFontHeight(index);
+}

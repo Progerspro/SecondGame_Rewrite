@@ -8,14 +8,22 @@
 #include "Text.h"
 #include "Timer.h"
 using namespace std;
+
+
 int main(int argc, char* argv[])
 {
+	//Middle function between Map and Charcter to handle the colision
+	SDL_Rect MiddleFunction[100];
 	SDL_Color TextColour = { 255, 0, 0, 0 };
 	Game game;
 	Charcter charcter;
 	Map map;
 	Text text;
 	Timer timer;
+	//For collision
+	int ArraySize = 7;
+	//for loop collision in drawobject DO NOT REMOVE IF YOU Don't want to make shit at Charcter.cpp just make MiddleFunction[ar + 1] or ar + 2 etc...
+	int ar = 0;
 	bool quit = false, Fps = false;
 	if (!game.Game_Init())
 	{
@@ -28,8 +36,9 @@ int main(int argc, char* argv[])
 		timer.Init("lazy.ttf", 20);
 		text.LoadFont("lazy.ttf", 50);
 		text.LoadText("Second Game!", TextColour);
-		map.PushMap("Tileset.png");
-		SDL_SetRenderDrawColor(Global_Data_LoadMedia::Global_Render, 255, 255, 255, 255);
+		text.LoadText("Hello twitter!", TextColour);
+		map.PushObject("Tileset.png");
+		
 	
 		while (!quit)
 		{
@@ -60,19 +69,27 @@ int main(int argc, char* argv[])
 						charcter.HandleEvent(game.event);
 					}
 				}
-			
-			SDL_RenderClear(Global_Data_LoadMedia::Global_Render);
+
+				SDL_SetRenderDrawColor(Global_Data_LoadMedia::Global_Render, 255, 255, 255, 255);
+				SDL_RenderClear(Global_Data_LoadMedia::Global_Render);
+
+		
 				map.MakeGrass();
-				map.Draw(14, 56, Map::Chair);
-				map.Draw(90, 56, Map::Chair);
-				map.Draw(333, 555, Map::Chair);
+				text.ShowText(game.SCREEN_WIDTH / 3, game.SCREEN_HEIGHT / 2, 0);
+				text.ShowText(game.SCREEN_WIDTH - text.font_Width(1),0, 1);
+
+					for (ar = 0; ar < ArraySize; ar++)
+					{
+						MiddleFunction[ar] = map.DrawObject(ar * 100, ar * 50, Map::Chair);
+					}
+				
 				if (Fps == true)
 				{
 					timer.ShowFps();
 				}
-				text.ShowText(game.SCREEN_WIDTH / 3, game.SCREEN_HEIGHT / 2,0);
-			
-				charcter.Move();
+				
+				MiddleFunction[ar] = map.DrawObject(game.SCREEN_WIDTH - 200, 50, Map::Chair);
+				charcter.Move(MiddleFunction,ArraySize + 1);
 			charcter.RenderCharcter();
 			SDL_RenderPresent(Global_Data_LoadMedia::Global_Render);
 		}

@@ -66,6 +66,7 @@ void Timer::Init(std::string Path, int Size)
 void Timer::ShowFps()
 {
 	static int Frames;
+	//TODO: Make some fixes for the minimized window frame rate
 	FrameRate = Frames / (SDL_GetTicks() / 1000);
 	streamFPS.str("");
 	streamFPS << "Your current FPS is: " << FrameRate;

@@ -60,7 +60,7 @@ void LoadMedia::Free()
 	SDL_DestroyTexture(Temp_Texture_Get);
 	SDL_FreeSurface(MainSurface);
 	Texture_Container.clear();
-	Surface_Container.clear();
+	Text_Surface_Container.clear();
 	Temp_Texture_Get = nullptr;
 	MainSurface = nullptr;
 	Font = nullptr;
@@ -81,15 +81,15 @@ void LoadMedia::GetRenderer()
 bool LoadMedia::LoadSurface()
 {
 	
-	MainSurface = IMG_Load(Path.c_str());
-	if (MainSurface == NULL)
+	Surface_Container.push_back(IMG_Load(Path.c_str()));
+	if (Surface_Container.back() == NULL)
 	{
 		std::cerr << "Could not load surface! " << SDL_GetError() << std::endl;
 		success = false;
 	}
 	else
 	{
-		 SDL_SetColorKey(MainSurface, SDL_TRUE, SDL_MapRGB(MainSurface->format, 255, 0, 255));
+		 SDL_SetColorKey(Surface_Container.back(), SDL_TRUE, SDL_MapRGB(Surface_Container.back()->format, 255, 0, 255));
 	}
 	return success;
 }
@@ -97,7 +97,7 @@ bool LoadMedia::LoadSurface()
 bool LoadMedia::CreateTexture()
 {
 	GetRenderer();
-	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, MainSurface));
+	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, Surface_Container.back()));
 
 	if (Texture_Container.back() == NULL)
 	{
@@ -122,7 +122,7 @@ SDL_Texture* LoadMedia::Get_Texture(int Texture_Index)
 }
 
 
-bool LoadMedia::LoadFont(std::string Path_To_Font,int Font_Size)
+bool LoadMedia::LoadFont(const std::string Path_To_Font,int Font_Size)
 {
 	Font = TTF_OpenFont(Path_To_Font.c_str(), Font_Size);
 	if (Font == NULL)
@@ -133,11 +133,11 @@ bool LoadMedia::LoadFont(std::string Path_To_Font,int Font_Size)
 	return success;
 }
 
-bool LoadMedia::Make_Surface_Text(std::string Text,SDL_Color Text_Colour)
+bool LoadMedia::Make_Surface_Text(const std::string Text,SDL_Color Text_Colour)
 {
 	
-	Surface_Container.push_back(TTF_RenderText_Solid(Font, Text.c_str(), Text_Colour));
-	if (Surface_Container.back() == NULL)
+	Text_Surface_Container.push_back(TTF_RenderText_Solid(Font, Text.c_str(), Text_Colour));
+	if (Text_Surface_Container.back() == NULL)
 	{
 		std::cerr << "Could not load font surface " << TTF_GetError() << std::endl;
 		success = false;
@@ -148,7 +148,7 @@ bool LoadMedia::Make_Surface_Text(std::string Text,SDL_Color Text_Colour)
 bool LoadMedia::CreateFontTexture()
 {
 	
-	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, Surface_Container.back()));
+	Texture_Container.push_back(SDL_CreateTextureFromSurface(LocalRender, Text_Surface_Container.back()));
 	if (Texture_Container.back() == NULL)
 	{
 		std::cerr << "Could not create texture from surface! " << SDL_GetError << std::endl;
@@ -157,7 +157,7 @@ bool LoadMedia::CreateFontTexture()
 	return success;
 }
 
-bool LoadMedia::PushFont( std::string Text,SDL_Color FontColour)
+bool LoadMedia::PushFont(const std::string Text,const SDL_Color FontColour)
 {
 	
 		if (!Make_Surface_Text(Text, FontColour))
@@ -184,18 +184,44 @@ void LoadMedia::FontInit()
 
 int LoadMedia::GetFontWidth(int index)
 {
-	SDL_Surface* Temp_Surface = Surface_Container[index];
+	SDL_Surface* Temp_Surface = Text_Surface_Container[index];
 	if (Temp_Surface == NULL)
-		std::cerr << "Could not take the width from the surface" << std::endl;
+		std::cerr << "Could not take the width from the font surface" << std::endl;
 	return Temp_Surface->w;
 }
 
 int LoadMedia::GetFontHeight(int index)
 {
-	SDL_Surface* Temp_Surface = Surface_Container[index];
+	SDL_Surface* Temp_Surface = Text_Surface_Container[index];
 	if (Temp_Surface == NULL)
-	std::cerr << "Could not take the width from the surface" << std::endl;
+	std::cerr << "Could not take the height from the font surface" << std::endl;
 	return Temp_Surface->h;
+}
+
+int LoadMedia::GetImageWidth(int index)
+{
+	if (Surface_Container[index] == NULL)
+	{
+		std::cerr << "Could not take the width from the image surface" << std::endl;
+		return NULL;
+	}
+	else
+	{
+		return Surface_Container[index]->w;
+	}
+}
+
+int LoadMedia::GetImageHeight(int index)
+{
+	if (Surface_Container[index] == NULL)
+	{
+		std::cerr << "Could not take the width from the image surface" << std::endl;
+		return NULL;
+	}
+	else
+	{
+		return Surface_Container[index]->h;
+	}
 }
 
 
