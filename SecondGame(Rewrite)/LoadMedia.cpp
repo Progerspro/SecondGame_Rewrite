@@ -67,7 +67,7 @@ void LoadMedia::Free()
 	IMG_Quit();
 	TTF_Quit();
 }
-				 //test
+				 //test111
 
 //Dont delete Checks if everything is good
 void LoadMedia::GetRenderer()
